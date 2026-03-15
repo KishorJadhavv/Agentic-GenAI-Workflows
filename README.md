@@ -89,3 +89,8 @@ python src/agents/self_correcting_agent.py
 *   **Docstrings**: All modules follow Google-style docstring conventions.
 *   **Type Hinting**: Full PEP 484 type hint coverage.
 *   **Scalability**: Optimized for high-volume token processing and concurrent execution.
+
+
+---
+### 📫 Let's Connect
+- 🔗 **LinkedIn:** [Kishor Jadhav](https://www.linkedin.com/in/jadhav-kishor/)
