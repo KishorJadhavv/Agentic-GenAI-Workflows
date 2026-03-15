@@ -1,0 +1,50 @@
+name: Agentic Workflows CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff pytest
+        pip install -r requirements.txt
+        
+    - name: Lint with Ruff
+      run: |
+        ruff check .
+        
+    - name: Run tests with pytest
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        MEMORY_MILVUS_HOST: localhost
+      run: |
+        pytest tests/
+        
+  deploy-airflow-dags:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy DAGs to Airflow
+      run: |
+        echo "Deploying DAGs to production Airflow instance..."
+        # Example sync command to S3 or direct Airflow server
+        # aws s3 sync airflow/dags/ s3://my-airflow-bucket/dags/
